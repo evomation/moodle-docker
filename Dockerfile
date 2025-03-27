@@ -2,7 +2,7 @@
 FROM php:8.3-apache
 
 LABEL maintainer="Michael Meese <michael@evomation.de>"
-LABEL description="Production-ready Moodle 4.5.x Docker image with PHP 8.3 and required extensions"
+LABEL description="Moodle 4.5.x Docker image with PHP 8.3 and required extensions"
 
 # Pass Moodle tag as build argument
 ARG MOODLE_TAG
