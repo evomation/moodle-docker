@@ -1,0 +1,35 @@
+name: Check for latest Moodle 4.5.x version
+
+on:
+  schedule:
+    - cron: '0 6 * * *'  # Every day at 6:00 UTC
+  workflow_dispatch:
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Get latest Moodle 4.5.x tag
+        id: moodle
+        run: |
+          TAG=$(git ls-remote --tags https://github.com/moodle/moodle.git \
+            | grep -o 'refs/tags/v4\.5\.[0-9]*' \
+            | sed 's/refs\/tags\///' \
+            | sort -V \
+            | tail -n1)
+
+          echo "Latest tag: $TAG"
+          echo "$TAG" > .latest-4.5-version
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+
+      - name: Commit version file if updated
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add .latest-4.5-version
+          git diff --cached --quiet || git commit -m "Update latest Moodle 4.5 version"
+          git push || echo "No changes to push"
+
