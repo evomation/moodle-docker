@@ -4,7 +4,7 @@ This repository builds a Docker image for [Moodle](https://moodle.org/) 4.5.x, b
 
 It is intended for use in automated environments, and is maintained by [Evomation](https://www.evomation.de) and published under the [brandkern](https://hub.docker.com/u/brandkern) Docker Hub organization by Evomation.
 
-## ⚠️ Disclaimer
+## ⚠️  Disclaimer
 
 This image and documentation are provided "as is", without warranty of any kind. Use at your own risk.  
 No liability or responsibility is accepted for correctness, completeness, or potential damage caused by the use of this software.
@@ -19,6 +19,10 @@ No liability or responsibility is accepted for correctness, completeness, or pot
 |------------------|----------------------------------------------|
 | `4.5-latest`     | Always points to the latest `v4.5.x` release |
 | `v4.5.3` (etc.)  | Pinned to a specific Moodle release          |
+
+### 🧬 Multi-Architecture Support
+
+This image is built for both `linux/amd64` (e.g. standard servers and CI runners) and `linux/arm64` (e.g. Apple Silicon or Raspberry Pi).
 
 ---
 
@@ -49,11 +53,33 @@ docker run -d -p 8080:80 \
 ```
 
 You need to provide a MariaDB (recommended version: `11.3`) or MySQL container separately.
-You find `docker-compose.yml` example in the `compose` subfolder in this project.
+
+### 🧪 Docker Compose Example
+
+A working `docker-compose.yml` example (including Moodle, database, and the optional cron container) is available in the [`compose`](./compose/) folder.
+
+You can run the full setup using:
+
+```bash
+cd compose
+docker-compose up -d
+```
+
+### 🔐 HTTPS Support with Traefik
+
+You can use a reverse proxy such as [Traefik](https://doc.traefik.io/traefik/), to enable HTTPS via automatic Let's Encrypt certificates.
+
+To use Traefik with this image:
+
+- expose the Moodle container on a Docker network Traefik can access
+- use appropriate labels in `docker-compose.yml`
+- make sure your domain points to your Traefik instance
+
+> You can find Traefik configuration examples in the official documentation.
 
 ---
 
-## ⚙️ Environment Variables
+## ⚙️  Environment Variables
 
 | Variable    | Required | Description                                 |
 |-------------|----------|---------------------------------------------|
@@ -87,10 +113,14 @@ docker logs -f moodle-cron
 
 ---
 
-## 🔄 Auto-Updating
+## 🔄 Auto-Updating & Docker Hub Publishing
 
 This image is automatically rebuilt using GitHub Actions when a new Moodle `v4.5.x` release is published.  
 The current version is stored in `.latest-4.5-version` and passed into the Docker build as `MOODLE_TAG`.
+
+The published image is available under:
+
+📦 Docker Hub → [brandkern/moodle](https://hub.docker.com/r/brandkern/moodle)
 
 ---
 

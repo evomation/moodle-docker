@@ -7,8 +7,9 @@ It includes:
 - A Moodle container (based on `php:8.3-apache`)
 - A MariaDB 11.3 database (as recommended by Moodle)
 - Persistent volumes for both Moodle data and the database
+- Multi-Architecture Support for `linux/amd64` and `linux/arm64`
 
-## ⚠️ Disclaimer
+## ⚠️  Disclaimer
 
 This image and documentation are provided "as is", without warranty of any kind. Use at your own risk.
 No liability or responsibility is accepted for correctness, completeness, or potential damage caused by the use of this software.
@@ -80,7 +81,7 @@ These volumes ensure your data is preserved between container restarts.
 
 ---
 
-## ⚙️ Environment Variables
+## ⚙️  Environment Variables
 
 See the `docker-compose.yml` for all available environment variables.
 
@@ -88,6 +89,20 @@ Minimum required:
 
 - `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASS`
 - `WWWROOT` (URL of the Moodle site)
+
+---
+
+## 🔐 HTTPS Support with Traefik
+
+You can use a reverse proxy such as [Traefik](https://doc.traefik.io/traefik/), to enable HTTPS via automatic Let's Encrypt certificates.
+
+To use Traefik with this image:
+
+- expose the Moodle container on a Docker network Traefik can access
+- use appropriate labels in `docker-compose.yml`
+- make sure your domain points to your Traefik instance
+
+You can find Traefik configuration examples in the official documentation.
 
 ---
 
