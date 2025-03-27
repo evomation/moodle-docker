@@ -6,7 +6,7 @@ LABEL description="Production-ready Moodle 4.5.x Docker image with PHP 8.3 and r
 
 # Pass Moodle tag as build argument
 ARG MOODLE_TAG
-ENV MOODLE_TAG=${MOODLE_TAG:-v4.5.3}
+ENV MOODLE_TAG=${MOODLE_TAG}
 
 # Install system dependencies and required PHP extensions
 RUN apt-get update && apt-get install -y \
